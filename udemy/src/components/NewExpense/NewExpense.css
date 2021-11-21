@@ -17,8 +17,12 @@
   background-color: #40005d;
   color: white;
   border-radius: 12px;
+}
+
+.new-expense .new-expense__actions button {
   margin-right: 1rem;
 }
+
 
 .new-expense button:hover,
 .new-expense button:active {

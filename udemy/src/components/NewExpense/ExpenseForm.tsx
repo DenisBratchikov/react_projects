@@ -24,16 +24,30 @@ export default function ExpenseForm(prors: IExpenseFormProps): JSX.Element {
      * + one object state with callback to update
      */
     const [userInput, setUserInput] = useState(DEFAULT_STATE);
+    const [formVisible, setFormVisible] = useState(false);
     const fieldChangeHandler = (field: string, event: ChangeEvent<HTMLInputElement>) => {
         setUserInput((prevState) => ({...prevState, [field]: event.target.value}))
     }
     const submitHanler = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         setUserInput(DEFAULT_STATE);
+        setFormVisible(false);
         prors.onSaveExpenseDate(userInput)
     };
+    const resetHandler = () => {
+        setUserInput(DEFAULT_STATE);
+        setFormVisible(false);
+    }
+    const addExpenseButtonClickHandler = () => {
+        setFormVisible(true);
+    }
+    if (!formVisible) {
+        return (
+            <button onClick={addExpenseButtonClickHandler} type="button">Add New Expense</button>
+        )
+    }
     return (
-        <form action="submit" onSubmit={submitHanler}>
+        <form action="submit" onSubmit={submitHanler} onReset={resetHandler}>
             <div className="new-expense__controls">
                 <div className="new-expense__control">
                     <label>Title</label>
@@ -62,6 +76,7 @@ export default function ExpenseForm(prors: IExpenseFormProps): JSX.Element {
                 </div>
             </div>
             <div className="new-expense__actions">
+                <button type="reset">Cancel</button>
                 <button type="submit">Add Expense</button>
             </div>
         </form>

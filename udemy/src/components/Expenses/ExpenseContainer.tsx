@@ -1,30 +1,23 @@
-import ExpenseItem, {IExpenseItemProps} from './ExpenseItem';
+import React, {useState} from 'react';
 import ExpenseFilter from './ExpenseFilter';
+import ExpenseList, {IExpenseListProps} from './ExpenseList';
 
 import './ExpenseContainer.css';
-import React, {useState} from 'react';
 
-export interface IExpenseContainerProps {
-    expenses: IExpenseItemProps[];
-};
+export type IExpenseContainerProps = IExpenseListProps;
 
-const ExpenseContainer: React.FunctionComponent<IExpenseContainerProps> = (props: IExpenseContainerProps) => {
+const ExpenseContainer: React.FunctionComponent<IExpenseContainerProps> = ({expenses}: IExpenseContainerProps) => {
     const [selectedYear, setSelectedYear] = useState('');
     const onExpenseFilterChangeHandler = (year: string) => {
         setSelectedYear(year);
     }
+    const filteredExpenses = selectedYear
+        ? expenses.filter(({date}) => !selectedYear || date.getFullYear().toString() === selectedYear)
+        : expenses
     return (
         <div className="expenses">
             <ExpenseFilter year={selectedYear} onExpenseFilterChange={onExpenseFilterChangeHandler}/>
-            {props.expenses.filter(
-                ({date}) => !selectedYear || date.getFullYear().toString() === selectedYear
-            ).map(({title, amount, date, key}) => (
-                <ExpenseItem
-                    key={key}
-                    title={title}
-                    amount={amount}
-                    date={date} />
-            ))}
+            <ExpenseList expenses={filteredExpenses}/>
         </div>
     )
 }
