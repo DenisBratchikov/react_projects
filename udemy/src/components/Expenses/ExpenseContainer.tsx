@@ -16,7 +16,15 @@ const ExpenseContainer: React.FunctionComponent<IExpenseContainerProps> = (props
     return (
         <div className="expenses">
             <ExpenseFilter year={selectedYear} onExpenseFilterChange={onExpenseFilterChangeHandler}/>
-            {props.expenses.map(({title, amount, date, key}) => <ExpenseItem key={key} title={title} amount={amount} date={date} />)}
+            {props.expenses.filter(
+                ({date}) => !selectedYear || date.getFullYear().toString() === selectedYear
+            ).map(({title, amount, date, key}) => (
+                <ExpenseItem
+                    key={key}
+                    title={title}
+                    amount={amount}
+                    date={date} />
+            ))}
         </div>
     )
 }

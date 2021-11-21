@@ -1,14 +1,20 @@
 import {ChangeEvent, FormEvent, useState} from 'react';
 import './ExpenseForm.css';
 
-const DEFAULT_STATE = {
+const DEFAULT_STATE: IExpenseFormData = {
     title: '',
     amount: '',
     date: ''
 };
 
-interface IExpenseFormProps {
-    onSaveExpenseDate: Function;
+export interface IExpenseFormData {
+    title: string;
+    amount: string;
+    date: string;
+}
+
+export interface IExpenseFormProps {
+    onSaveExpenseDate: (data: IExpenseFormData) => void;
 }
 
 export default function ExpenseForm(prors: IExpenseFormProps): JSX.Element {

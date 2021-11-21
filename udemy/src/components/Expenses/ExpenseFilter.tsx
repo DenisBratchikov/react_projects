@@ -1,4 +1,4 @@
-import {ChangeEvent} from 'react';
+import React, {ChangeEvent} from 'react';
 import './ExpenseFilter.css';
 
 export interface IExpenseFilterProps {
@@ -6,7 +6,7 @@ export interface IExpenseFilterProps {
     onExpenseFilterChange: (value: string) => void;
 }
 
-export default function ExpenseFilter(props: IExpenseFilterProps) {
+const ExpenseFilter: React.FunctionComponent<IExpenseFilterProps> = (props: IExpenseFilterProps) => {
     const onChangeHandler = (event: ChangeEvent<HTMLSelectElement>) => {
         props.onExpenseFilterChange(event.target.value);
     }
@@ -15,6 +15,7 @@ export default function ExpenseFilter(props: IExpenseFilterProps) {
             <div className='expense-filter__control'>
                 <label>Filter by year</label>
                 <select value={props.year} onChange={onChangeHandler}>
+                    <option value=''>Not selected</option>
                     <option value='2022'>2022</option>
                     <option value='2021'>2021</option>
                     <option value='2020'>2020</option>
@@ -24,3 +25,5 @@ export default function ExpenseFilter(props: IExpenseFilterProps) {
         </div>
     );
 };
+
+export default ExpenseFilter;
