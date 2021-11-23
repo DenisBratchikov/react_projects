@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import ExpenseFilter from './ExpenseFilter';
 import ExpenseList, {IExpenseListProps} from './ExpenseList';
+import ExpenseChart from './ExpenseChart';
 
 import './ExpenseContainer.css';
 
@@ -17,6 +18,7 @@ const ExpenseContainer: React.FunctionComponent<IExpenseContainerProps> = ({expe
     return (
         <div className="expenses">
             <ExpenseFilter year={selectedYear} onExpenseFilterChange={onExpenseFilterChangeHandler}/>
+            <ExpenseChart expenses={filteredExpenses}/>
             <ExpenseList expenses={filteredExpenses}/>
         </div>
     )

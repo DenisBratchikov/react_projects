@@ -1,3 +1,4 @@
+import {useState} from 'react';
 import ExpenseForm, {IExpenseFormData} from './ExpenseForm';
 
 import './NewExpense.css';
@@ -15,6 +16,7 @@ export interface INewExpenseProps {
 }
 
 export default function NewExpense(props: INewExpenseProps) {
+    const [isEditing, setIsEditing] = useState(false);
     const saveExpenseDataHandler = (formData: IExpenseFormData) => {
         props.onAddExpense({
             ...formData,
@@ -22,10 +24,26 @@ export default function NewExpense(props: INewExpenseProps) {
             date: new Date(formData.date),
             key: Math.random().toString()
         });
+        setIsEditing(false);
     };
+    const cancelAddingDataHandler = () => {
+        setIsEditing(false);
+    }
+    const startEditing = () => {
+        setIsEditing(true);
+    }
+    if (!isEditing) {
+        return (
+            <div className="new-expense">
+                <button onClick={startEditing} type="button">Add New Expense</button>
+            </div>
+        )
+    }
     return (
         <div className="new-expense">
-            <ExpenseForm onSaveExpenseDate={saveExpenseDataHandler}/>
+            <ExpenseForm
+                onCancelAddingData={cancelAddingDataHandler}
+                onSaveExpenseData={saveExpenseDataHandler}/>
         </div>
     );
 }
