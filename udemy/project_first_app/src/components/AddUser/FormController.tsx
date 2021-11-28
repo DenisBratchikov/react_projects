@@ -19,9 +19,11 @@ export default function FormController(props: IFormControllerProps) {
         if (parseInt(data.age) <= 0) {
             return setErrorMessage(ERROR_MESSAGES.age);
         }
+        // PopupDialog.show({errorMessage: ERROR_MESSAGES.empty, onClose: onCloseHandler})
         props.onAddUser(data);
     }
     const onCloseHandler = () => {
+        // PopupDialog.hide();
         setErrorMessage('');
     }
     if (!errorMessage) {

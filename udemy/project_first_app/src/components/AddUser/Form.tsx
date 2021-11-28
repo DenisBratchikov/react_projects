@@ -1,4 +1,4 @@
-import {ChangeEvent, FormEvent, useState} from 'react';
+import {ChangeEvent, FormEvent, useRef, useState} from 'react';
 import Button from '../UI/Button';
 import Card from '../UI/Card';
 import style from './Form.module.css';
@@ -13,30 +13,24 @@ export interface IFormProps {
 }
 
 export default function Form(props: IFormProps) {
-    const [name, setName] = useState('');
-    const [age, setAge] = useState('');
+    const nameRef = useRef<HTMLInputElement>(null);
+    const ageRef = useRef<HTMLInputElement>(null);
+
     const addUser = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        props.onAddUser({name, age});
-        setName('');
-        setAge('');
-    }
-    const onNameChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
-        const value = event.target.value;
-        setName(value);
-    }
-    const onAgeChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
-        const value = event.target.value;
-        setAge(value);
+        props.onAddUser({
+            name: nameRef.current?.value || '',
+            age: ageRef.current?.value || ''
+        });
     }
     return (
         <Card className={style.form}>
             <form onSubmit={addUser}>
                 <label htmlFor="username">UserName</label>
-                <input id="username" type="text" value={name} onChange={onNameChangeHandler}></input>
+                <input id="username" type="text" ref={nameRef}></input>
                 <label htmlFor="age">Age (Years)</label>
-                <input id="age" type="number" value={age} onChange={onAgeChangeHandler}></input>
-                <Button title="Add User" type="submit"/>
+                <input id="age" type="number" ref={ageRef}></input>
+                <Button title="Add User" type="submit" />
             </form>
         </Card>
     )
