@@ -15,5 +15,6 @@
       }
    },
    "highlight-matching-tag.highlightSelfClosing": true,
-   "eslint.format.enable": true
+   "eslint.format.enable": true,
+   "git.ignoreLimitWarning": true
 }
