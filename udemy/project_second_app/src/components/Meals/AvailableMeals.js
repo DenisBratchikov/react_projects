@@ -1,49 +1,61 @@
+import { useEffect, useState } from "react";
+
 import Card from "../UI/Card";
 import MealItem from "./MealItem/MealItem";
 import classes from "./AvailableMeals.module.css";
 
-const DUMMY_MEALS = [
-  {
-    id: "m1",
-    name: "Sushi",
-    description: "Finest fish and veggies",
-    price: 22.99,
-  },
-  {
-    id: "m2",
-    name: "Schnitzel",
-    description: "A german specialty!",
-    price: 16.5,
-  },
-  {
-    id: "m3",
-    name: "Barbecue Burger",
-    description: "American, raw, meaty",
-    price: 12.99,
-  },
-  {
-    id: "m4",
-    name: "Green Bowl",
-    description: "Healthy...and green...",
-    price: 18.99,
-  },
-];
+const URL =
+  "https://react-course-app-ae14e-default-rtdb.firebaseio.com/meals.json";
 
 export default function AvailableMeals() {
-  const mealsList = DUMMY_MEALS.map((meal) => (
-    <MealItem
-      key={meal.id}
-      id={meal.id}
-      name={meal.name}
-      description={meal.description}
-      price={meal.price}
-    />
-  ));
-  return (
-    <section className={classes.meals}>
+  const [isLoading, setIsLoading] = useState(true);
+  const [mealsList, setMealsList] = useState([]);
+  const [errorMsg, setErrorMsg] = useState();
+
+  useEffect(() => {
+    fetch(URL)
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        }
+        throw new Error("Something went wrong!");
+      })
+      .then((data) => {
+        const meals = [];
+        for (let key in data) {
+          meals.push(
+            <MealItem
+              key={key}
+              id={key}
+              name={data[key].name}
+              description={data[key].description}
+              price={data[key].price}
+            />
+          );
+        }
+        setMealsList(meals);
+      })
+      .catch((error) => {
+        setErrorMsg(error.message);
+      })
+      .finally(() => setIsLoading(false));
+  }, []);
+
+  let content = "";
+
+  if (isLoading) {
+    content = <p className={classes.text}>Loading...</p>;
+  } else if (errorMsg) {
+    content = <p className={classes.error}>{errorMsg}</p>;
+  } else if (mealsList.length < 1) {
+    content = <p className={classes.text}>No food available!</p>;
+  } else {
+    content = (
       <Card>
         <ul>{mealsList}</ul>
       </Card>
-    </section>
-  );
+    );
+  }
+
+  return <section className={classes.meals}>{content}</section>;
 }

@@ -54,6 +54,9 @@ export default function CartProvider(props) {
     removeItem: (id) => {
       dispatchCartAction({ type: "REMOVE", id: id });
     },
+    clearCart: () => {
+      dispatchCartAction({ type: "CLEAR" });
+    },
   };
   return (
     <CartContext.Provider value={cartContext}>
